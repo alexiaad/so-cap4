@@ -4,5 +4,22 @@
 # impreuna cu toate fisierele pe care le contine.
 # Se presupune ca S nu contine alte subdirectoare.
 
-# Scrieti solutia mai jos:
+if [ "$#" -ne 1 ]; then
+    echo "Utilizare: $0 S" >&2
+    exit 1
+fi
 
+S=$1
+if [ ! -d "$S" ]; then
+    echo "Directorul $S nu exista." >&2
+    exit 1
+fi
+
+case "$(cd -- "$S" 2>/dev/null && pwd)" in
+    "$(pwd)"|"")
+        echo "Directorul curent nu poate fi sters." >&2
+        exit 1
+        ;;
+esac
+
+rm -rf -- "$S"

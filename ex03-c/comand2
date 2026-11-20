@@ -2,5 +2,7 @@
 # Problema 3 (c) - comand2 fara parametri formali
 # Transmite datele lui comand1 prin variabilele interpretorului.
 
-# Scrieti solutia mai jos:
-
+script_dir=$(cd "$(dirname "$0")" && pwd)
+export S=${S:-rezultat-c}
+export FILE=${FILE:-date-c}
+bash "$script_dir/comand1"

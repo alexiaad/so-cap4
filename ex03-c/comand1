@@ -2,5 +2,38 @@
 # Problema 3 (c) - comand1 fara parametri formali
 # Isi ia datele din variabilele interpretorului.
 
-# Scrieti solutia mai jos:
+S=${S:-rezultat}
+FILE=${FILE:-date}
 
+script_dir=$(cd "$(dirname "$0")" && pwd)
+optiune_prog="$script_dir/../ex02/OPTIUNE"
+if [ ! -x "$optiune_prog" ]; then
+    gcc "$script_dir/../ex02/OPTIUNE.c" -o "$optiune_prog" || exit 1
+fi
+
+mkdir -p -- "$S" || exit 1
+parinte=$(pwd)
+cd -- "$S" || exit 1
+
+while true; do
+    "$optiune_prog"
+    opt=$?
+    case "$opt" in
+        0) break ;;
+        1)
+            echo "Introduceti text. Terminati cu Ctrl+D:"
+            cat > "$FILE.TXT"
+            ;;
+        2)
+            [ -f "$FILE.TXT" ] || { echo "Eroare: $FILE.TXT nu exista."; continue; }
+            sort "$FILE.TXT" > "$FILE.SRT"
+            ;;
+        3)
+            [ -f "$FILE.SRT" ] || { echo "Eroare: $FILE.SRT nu exista."; continue; }
+            cat "$FILE.SRT"
+            ;;
+    esac
+done
+
+pwd
+cd "$parinte" || exit 1

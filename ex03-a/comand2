@@ -2,5 +2,8 @@
 # Problema 3 (a) - comand2
 # Apeleaza comand1 cu diferite valori pentru parametri.
 
-# Scrieti solutia mai jos:
+script_dir=$(cd "$(dirname "$0")" && pwd)
+comand1="$script_dir/../ex02/comand1"
 
+bash "$comand1" rezultat1 date1
+bash "$comand1" rezultat2 date2

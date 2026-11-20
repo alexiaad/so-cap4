@@ -2,5 +2,43 @@
 # Problema 3 (b) - comand1 imbunatatit
 # Face verificari de existenta a fisierelor daca OPTIUNE returneaza 2 sau 3.
 
-# Scrieti solutia mai jos:
+if [ "$#" -ne 2 ]; then
+    echo "Utilizare: $0 S FILE" >&2
+    exit 1
+fi
 
+S=$1
+FILE=$2
+script_dir=$(cd "$(dirname "$0")" && pwd)
+optiune_prog="$script_dir/../ex02/OPTIUNE"
+
+if [ ! -x "$optiune_prog" ]; then
+    gcc "$script_dir/../ex02/OPTIUNE.c" -o "$optiune_prog" || exit 1
+fi
+
+mkdir -p -- "$S" || exit 1
+parinte=$(pwd)
+cd -- "$S" || exit 1
+
+while true; do
+    "$optiune_prog"
+    opt=$?
+    case "$opt" in
+        0) break ;;
+        1)
+            echo "Introduceti text. Terminati cu Ctrl+D:"
+            cat > "$FILE.TXT"
+            ;;
+        2)
+            [ -f "$FILE.TXT" ] || { echo "Eroare: $FILE.TXT nu exista."; continue; }
+            sort "$FILE.TXT" > "$FILE.SRT"
+            ;;
+        3)
+            [ -f "$FILE.SRT" ] || { echo "Eroare: $FILE.SRT nu exista."; continue; }
+            cat "$FILE.SRT"
+            ;;
+    esac
+done
+
+pwd
+cd "$parinte" || exit 1
